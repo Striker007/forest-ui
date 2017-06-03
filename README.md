@@ -23,6 +23,7 @@ INSTALLATION:
 
 1) SOFTWARE:
 check access to  Docker registry
+```sh
 cd /data
 git clone ...forest-ui  (web ui and consumer)
 git clone ...forest
@@ -34,18 +35,22 @@ mkdir env
 virtualenv env
  ./env/bin/pip install flask flask-wtf redis
 project dependencies php, npm - for composer, npm etc.
-
+```
 2) CONFIGURATION
+```
 /data/forest/configs/main.conf - where are - IPs = sandboxes , ci user, main dir path
+```
 3) RUN
+```
 deside that redis is started ( sudo docker ps | grep redis )
 cd  /data/forest-ui/forest-ui
 ./env/bin/python run.py  (web ui) http://server:8041
 ./env/bin/python app/mod_launcher/controllers.py (consumer, i have to rename this ...) 
- 
+ ```
 #--------
 
 1) HOW TO USE (WEB UI):
+```
 a.1) open in browser (any ip of your server and port 8081)
 http://10.145.2.141:8081/containers/
 U may see web ui with list of active sandboxes and form which uses for start new sandboxes
@@ -64,21 +69,24 @@ docker-compose.yml
 API code folder with created app/configs/config.yml
 PS u can see post install procedures in
 /data/forest/mod_code_migrations.sh
+```
 
 2) HOW TO USE (TOOLS):
--- CLEAN
+```-- CLEAN
 cd /data/forest
 ./cli_sandbox_destroy.sh sandbox_10
  sudo docker exec -it some-redis redis-cli
 FLUSHALL
 -- START sandbox
 ./cli_sandbox_start.sh  sandbox_10  master
-
+```
 3) HOW TO USE (WITHOUT EITHER TOOLS AND UI):
-(after sandbox created)
+```(after sandbox created)
 cd /data/forest
 cd sandbox_10
 manage containers - sudo docker-compose up \ down
 edit - api/app/configs/config.yml
+```
 
-4) LOGS: /data/forest-ui/forest-ui/controllers.log
+4) LOGS:
+```/data/forest-ui/forest-ui/controllers.log```
