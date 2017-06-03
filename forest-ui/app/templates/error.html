@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<br>
+<div class="container">
+	<div class="row">
+		<div class="column column-50">
+			<h1>Sorry, something going wrong (error).</h1>
+			<p>
+			  {% if error %}
+				{{ error }}
+			  {% endif %}
+			</p>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

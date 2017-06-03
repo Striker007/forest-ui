@@ -1,0 +1,148 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div style="height: 60px; background-color: #2e6da4; margin: 0">
+    <i class="float-right fa fa-user-o" aria-hidden="true" style="color:#ffffff; margin: 20px"></i>
+</div>
+
+<br>
+
+<div class="row">
+    <legend class="column column-35 column-offset-25">Repo:
+        <a href="http://git" target="_blank">
+            http://git
+        </a>
+    </legend>
+</div>
+<br>
+
+<div class="row">
+
+    {% macro render_field(field, placeholder=None) %}
+    <div>
+        {% set css_class = 'form-control ' + kwargs.pop('class', '') %}
+        {{ field(class=css_class, placeholder=placeholder, **kwargs) }}
+    </div>
+    {% endmacro %}
+
+    <div class="column column-25 column-offset-25">
+
+        <div id="errors" class="column column-100" style="display:none; color: red; font-size: small">
+            &nbsp; ff
+        </div>
+        <br>
+
+        <div id="loader" style="margin-left: 30%; display: none">
+            <img src="{{ url_for('static', filename='images/loader.gif') }}">
+            <br> ... building ...
+        </div>
+
+        <form id="launch-form" accept-charset="UTF-8" role="form">
+            <!-- <fieldset> -->
+            {# form.csrf_token #}
+            {{ render_field(form.branch, placeholder="v1.13.19 (Your branch or tag)", autofocus="") }}
+            {{ render_field(form.sandbox, placeholder="sandbox_10 (Your sandbox)", autofocus="") }}
+
+            <button id="launch" class="button-primary button-outlin" style="width: 100%">
+                Launch
+            </button>
+
+        </form>
+
+        <!-------------------- AJAX --------------------->
+
+        <script type=text/javascript>
+
+
+
+        $(function() {
+         $('button#launch').bind('click', function(event) {
+
+           event.preventDefault();
+
+            var branch = $('input[name="branch"]').val();
+            var sandbox = $('input[name="sandbox"]').val();
+
+            //$('#loader').show();
+            $('#launch-form').hide();
+            $('#errors').text()
+            $('#errors').hide()
+
+            $.getJSON(
+              $SCRIPT_ROOT + '/containers/launch',
+              {
+                branch: $('input[name="branch"]').val(),
+                sandbox: $('input[name="sandbox"]').val()
+              },
+              function(data)
+              {
+                 //$('#loader').hide();
+                 $('#launch-form').show();
+                 if (data && data.errors) {
+                   $('#errors').show()
+                   $('#errors').text(JSON.stringify(data.errors))
+                 } else {
+                     //setTimeout(function ()
+                     //{
+                         window.location.href=window.location.href;
+                     //}, 1000)
+                     $('input[name="branch"]').val("")
+                     $('input[name="sandbox"]').val("")
+                 }
+            });
+
+         });
+
+       });
+
+        </script>
+
+    </div>
+
+</div>
+
+<!-- CONTAINERS -->
+
+<div class="row">
+
+    {% if list.containers_exist %}
+
+    <table  style="margin-top: 1%">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>IP</th>
+                <th>State</th>
+                <th>Branch</th>
+                <th>Updated</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for container in list.containers %}
+            <tr>
+                <td> {{ container[0].name }}  </td>
+                <td> {{ container[0].ip }} </td>
+                <td>
+                    {% if container[0].state != "up" %}
+                      <img src="{{ url_for('static', filename='images/loader.gif') }}" style="width: 20px; height: 20px">
+                      (building)
+                    {% else %}
+                      <i class="fa fa-play"  style="width: 20px; height: 20px;"></i>
+                          (up)
+                    {% endif %}
+                </td>
+                <td> {{ container[0].branch }} </td>
+                <td> {{ container[0].updated }} </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% else %}
+      <h1 class="column column-50 column-offset-25">No runnings Sandboxes yet</h1>
+    {% endif %}
+
+</div>
+<!-- END CONTAINERS -->
+
+{% endblock body %}

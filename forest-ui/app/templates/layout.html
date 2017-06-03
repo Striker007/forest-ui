@@ -1,0 +1,58 @@
+<html>
+<head>
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <!-- CSS Reset -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='normalize.css') }}">
+    <!-- Milligram CSS minified -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='milligram.min.css') }}">
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- jQuery for AJAX -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="{{url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
+    <!-- -->
+    <script type=text/javascript>
+        $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    <style>
+        html {
+            box-sizing: border-box;
+            font-size: 62.5%;
+        }
+
+        body {
+            color: #606c76;
+            font-family: 'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+            font-size: 1.6em;
+            font-weight: 300;
+            letter-spacing: .01em;
+            line-height: 1.6;
+        }
+        table {
+            width: 80%;
+            margin-left: 10%;
+            margin-top: 10%;
+        }
+        td,
+        th {
+            border-bottom: 0.1rem solid #e1e1e1;
+            padding: 1.2rem 1.5rem;
+            text-align: left;
+        }
+        td:first-child,
+        th:first-child {
+            padding-left: 0;
+        }
+        td:last-child,
+        th:last-child {
+            padding-right: 0;
+        }
+        i {
+            color: #3c763d;
+        }
+    </style>
+</head>
+
+    {% block body %}{% endblock %}
+
